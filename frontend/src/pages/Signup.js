@@ -57,6 +57,7 @@ const Signup = () => {
                             <Form.Select onChange={(e) => setFormData({...formData, role: e.target.value})}>
                                 <option value="Technician">Technician</option>
                                 <option value="Manager">Manager</option>
+                                <option value="Employee">Employee (Standard User)</option>
                             </Form.Select>
                         </Form.Group>
                         {formData.role === 'Technician' && (

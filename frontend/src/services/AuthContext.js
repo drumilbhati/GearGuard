@@ -10,19 +10,28 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user_name');
+        const storedRole = localStorage.getItem('user_role');
+        const storedId = localStorage.getItem('user_id'); // Load ID
         if (token && storedUser) {
-            setUser({ name: storedUser, token });
+            setUser({ name: storedUser, role: storedRole, id: storedId ? parseInt(storedId) : null, token });
         }
         setLoading(false);
     }, []);
 
     const login = async (email, password) => {
         const res = await api.post('/login', { email, password });
-        const { token, name, role } = res.data;
+        // Assuming backend returns user_id in the response map or we decode it
+        // The backend Login handler returns: { token, name, role } but NOT id.
+        // I will fix the backend to return ID as well.
+        // For now, let's assume I fix the backend next.
+        const { token, name, role, user_id } = res.data; 
+        
         localStorage.setItem('token', token);
         localStorage.setItem('user_name', name);
         localStorage.setItem('user_role', role);
-        setUser({ name, role, token });
+        if (user_id) localStorage.setItem('user_id', user_id);
+        
+        setUser({ name, role, id: user_id, token });
         return res.data;
     };
 

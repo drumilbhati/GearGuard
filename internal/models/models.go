@@ -39,12 +39,21 @@ type Equipment struct {
 	ID                uint            `gorm:"primaryKey" json:"id"`
 	Name              string          `json:"name"`
 	Category          string          `json:"category"`
+	Department        string          `json:"department"` // E.g., Production, HR
 	SerialNumber      string          `json:"serial_number"`
 	PurchaseDate      time.Time       `json:"purchase_date"`
 	WarrantyInfo      string          `json:"warranty_info"`
 	Location          string          `json:"location"`
+	
 	MaintenanceTeamID uint            `json:"maintenance_team_id"`
 	MaintenanceTeam   MaintenanceTeam `gorm:"foreignKey:MaintenanceTeamID" json:"maintenance_team,omitempty"`
+	
+	DefaultTechnicianID *uint         `json:"default_technician_id"`
+	DefaultTechnician   *User         `gorm:"foreignKey:DefaultTechnicianID" json:"default_technician,omitempty"`
+
+	EmployeeID        *uint           `json:"employee_id"` // Owner of the equipment
+	Employee          *User           `gorm:"foreignKey:EmployeeID" json:"employee,omitempty"`
+
 	IsUsable          bool            `gorm:"default:true" json:"is_usable"`
 }
 
@@ -66,6 +75,9 @@ type MaintenanceRequest struct {
 	
 	TechnicianID  *uint `json:"technician_id"`
 	Technician    *User `gorm:"foreignKey:TechnicianID" json:"technician,omitempty"`
+
+	CreatedByID   uint  `json:"created_by_id"`
+	CreatedBy     User  `gorm:"foreignKey:CreatedByID" json:"created_by,omitempty"`
 	
 	ScheduledDate *time.Time `json:"scheduled_date"`
 	DurationHours float64    `json:"duration_hours"`
