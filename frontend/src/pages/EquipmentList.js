@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Container, Table, Button, Badge, Card, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../services/AuthContext';
 import { FaSearch, FaPlus, FaFilter, FaClock } from 'react-icons/fa';
 
 const EquipmentList = () => {
+    const { user } = useAuth();
     const [equipment, setEquipment] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [openCounts, setOpenCounts] = useState({});
     const navigate = useNavigate();
+
+    const isManager = user?.role === 'Manager';
 
     useEffect(() => {
         // Debounce search to avoid too many API calls
@@ -45,9 +49,11 @@ const EquipmentList = () => {
                     <h2 className="fw-bold mb-1">Equipment Registry</h2>
                     <p className="text-muted mb-0">Manage and track company assets</p>
                 </div>
-                <Button variant="primary" onClick={() => navigate('/equipment/new')} className="d-flex align-items-center gap-2 shadow-sm">
-                    <FaPlus size={12} /> Add Equipment
-                </Button>
+                {isManager && (
+                    <Button variant="primary" onClick={() => navigate('/equipment/new')} className="d-flex align-items-center gap-2 shadow-sm">
+                        <FaPlus size={12} /> Add Equipment
+                    </Button>
+                )}
             </div>
 
             <Card className="border-0 shadow-sm">

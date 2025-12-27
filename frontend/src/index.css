@@ -4,8 +4,8 @@
   --bg-card: #ffffff;
   --text-primary: #2d3748;
   --text-secondary: #718096;
-  --primary-color: #3182ce;
-  --primary-hover: #2b6cb0;
+  --primary-color: #714B67; /* Odoo Purple */
+  --primary-hover: #5a3b52;
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -42,27 +42,51 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover);
-  border-color: var(--primary-hover);
+  background-color: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+}
+
+.btn-outline-primary {
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25);
 }
 
 .navbar {
-  box-shadow: var(--shadow-md);
-  background-color: #1a202c !important; /* Dark Slate */
+  box-shadow: var(--shadow-sm);
+  background-color: #ffffff !important;
+  border-bottom: 2px solid var(--primary-color) !important;
 }
 
 .nav-link {
   font-weight: 500;
-  color: #cbd5e0 !important;
+  color: #4a5568 !important;
 }
 
 .nav-link:hover, .nav-link.active {
-  color: #fff !important;
+  color: var(--primary-color) !important;
 }
 
 /* Kanban Specifics */

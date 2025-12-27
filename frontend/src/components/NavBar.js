@@ -20,9 +20,9 @@ const AppNavbar = () => {
     const isTechnician = user?.role === 'Technician';
 
     return (
-        <Navbar expand="lg" className="py-3 sticky-top border-bottom" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
+        <Navbar expand="lg" className="py-3 sticky-top border-bottom" style={{ backgroundColor: '#ffffff', borderBottom: '2px solid #714B67' }}>
             <Container>
-                <Navbar.Brand as={Link} to="/" className="fw-bold d-flex align-items-center text-primary" style={{ fontSize: '1.25rem', letterSpacing: '-0.5px' }}>
+                <Navbar.Brand as={Link} to="/" className="fw-bold d-flex align-items-center" style={{ fontSize: '1.25rem', letterSpacing: '-0.5px', color: '#714B67' }}>
                     <span className="me-2">⚙️</span> GearGuard
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

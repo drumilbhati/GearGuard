@@ -99,7 +99,7 @@ const KanbanBoard = () => {
 
     const getColumnColor = (status) => {
         switch(status) {
-            case 'New': return '#ebf8ff'; // Blue-50
+            case 'New': return '#f3e8ff'; // Purple-50
             case 'In Progress': return '#fffaf0'; // Orange-50
             case 'Repaired': return '#f0fff4'; // Green-50
             case 'Scrap': return '#fff5f5'; // Red-50

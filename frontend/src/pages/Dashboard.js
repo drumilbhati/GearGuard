@@ -99,7 +99,7 @@ const Dashboard = () => {
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <h3 className="fw-bold text-dark" style={{ letterSpacing: '-0.5px' }}>Dashboard</h3>
                 <div className="d-flex gap-2">
-                    <Button variant="dark" onClick={() => navigate('/requests/new')}>
+                    <Button variant="primary" onClick={() => navigate('/requests/new')} className="shadow-sm px-4">
                         New Request
                     </Button>
                 </div>
@@ -121,9 +121,9 @@ const Dashboard = () => {
                         title="Technician Load" 
                         value={`${stats.utilization_rate ? stats.utilization_rate.toFixed(0) : 0}% Utilized`}
                         subtitle={`(${stats.technician_count || 0} Technicians Active)`}
-                        borderColor="#339af0" // Blue
-                        bgColor="#e7f5ff"
-                        textColor="#1864ab"
+                        borderColor="#714B67" // Purple
+                        bgColor="#f3e8ff"
+                        textColor="#5a3b52"
                         link="/teams"
                     />
                     <KPICard 
