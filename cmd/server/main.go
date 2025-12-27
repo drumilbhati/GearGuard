@@ -50,6 +50,10 @@ func main() {
 
 	                api.HandleFunc("/login", handlers.Login).Methods("POST", "OPTIONS")
 
+	                api.HandleFunc("/forgot-password", handlers.ForgotPassword).Methods("POST", "OPTIONS")
+
+	                api.HandleFunc("/reset-password", handlers.ResetPassword).Methods("POST", "OPTIONS")
+
 	                api.HandleFunc("/teams", handlers.GetTeams).Methods("GET", "OPTIONS")
 
 	        

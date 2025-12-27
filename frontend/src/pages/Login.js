@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../services/AuthContext';
 
 const Login = () => {
@@ -38,7 +38,10 @@ const Login = () => {
                         <Button className="w-100" type="submit">Log In</Button>
                     </Form>
                     <div className="text-center mt-3">
-                        <a href="/signup">Need an account? Sign Up</a>
+                        <Link to="/forgot-password">Forgot Password?</Link>
+                    </div>
+                    <div className="text-center mt-2">
+                        <Link to="/signup">Need an account? Sign Up</Link>
                     </div>
                 </Card.Body>
             </Card>

@@ -10,6 +10,8 @@ import CalendarView from './pages/CalendarView';
 import RequestForm from './pages/RequestForm';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Teams from './pages/Teams';
 import { AuthProvider, useAuth } from './services/AuthContext';
 
@@ -27,6 +29,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           
           <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/equipment" element={<ProtectedRoute><EquipmentList /></ProtectedRoute>} />

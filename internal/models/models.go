@@ -21,12 +21,14 @@ const (
 )
 
 type User struct {
-	ID       uint   `gorm:"primaryKey" json:"id"`
-	Name     string `json:"name"`
-	Email    string `gorm:"unique" json:"email"`
-	Password string `json:"-"`    // Don't expose password hash
-	Role     string `json:"role"` // "Manager", "Technician"
-	TeamID   *uint  `json:"team_id"`
+	ID                 uint      `gorm:"primaryKey" json:"id"`
+	Name               string    `json:"name"`
+	Email              string    `gorm:"unique" json:"email"`
+	Password           string    `json:"-"` // Don't expose password hash
+	Role               string    `json:"role"`
+	TeamID             *uint     `json:"team_id"`
+	PasswordResetToken string    `json:"-"`
+	PasswordResetAt    time.Time `json:"-"`
 }
 
 type MaintenanceTeam struct {

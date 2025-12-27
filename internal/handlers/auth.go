@@ -1,17 +1,110 @@
 package handlers
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"gearguard/internal/database"
 	"gearguard/internal/models"
+	"gearguard/internal/services"
 	"gearguard/internal/utils"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
+
+// ForgotPassword handles password reset request
+func ForgotPassword(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Email string `json:"email"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		utils.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	fmt.Printf("Password reset requested for email: %s\n", input.Email)
+
+	var user models.User
+	if result := database.DB.Where("email = ?", input.Email).First(&user); result.Error != nil {
+		fmt.Printf("User not found for email: %s\n", input.Email)
+		// For security, don't reveal if email exists
+		utils.RespondJSON(w, http.StatusOK, map[string]string{"message": "If this email is registered, you will receive a reset link."})
+		return
+	}
+
+	// Generate Token
+	b := make([]byte, 20)
+	if _, err := rand.Read(b); err != nil {
+		fmt.Println("Error generating secure token")
+		utils.RespondError(w, http.StatusInternalServerError, "Error generating token")
+		return
+	}
+	token := hex.EncodeToString(b)
+
+	// Save to DB
+	user.PasswordResetToken = token
+	user.PasswordResetAt = time.Now().Add(1 * time.Hour)
+	if err := database.DB.Save(&user).Error; err != nil {
+		fmt.Printf("Error saving token to DB: %v\n", err)
+		utils.RespondError(w, http.StatusInternalServerError, "Error saving token")
+		return
+	}
+
+	fmt.Printf("Token generated and saved for user %s\n", user.Email)
+
+	// Send Email
+	frontendURL := os.Getenv("FRONTEND_URL")
+	if frontendURL == "" {
+		frontendURL = "http://localhost:3000"
+	}
+
+	resetLink := fmt.Sprintf("%s/reset-password/%s", frontendURL, token)
+	body := fmt.Sprintf("<h3>Password Reset Request</h3><p>Click the link below to reset your password:</p><a href='%s'>%s</a><p>This link expires in 1 hour.</p>", resetLink, resetLink)
+
+	go services.SendEmail([]string{user.Email}, "Password Reset - GearGuard", body)
+
+	utils.RespondJSON(w, http.StatusOK, map[string]string{"message": "If this email is registered, you will receive a reset link."})
+}
+
+// ResetPassword handles the password update
+func ResetPassword(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Token    string `json:"token"`
+		Password string `json:"password"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		utils.RespondError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var user models.User
+	if result := database.DB.Where("password_reset_token = ? AND password_reset_at > ?", input.Token, time.Now()).First(&user); result.Error != nil {
+		utils.RespondError(w, http.StatusBadRequest, "Invalid or expired token")
+		return
+	}
+
+	// Update Password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
+	if err != nil {
+		utils.RespondError(w, http.StatusInternalServerError, "Error hashing password")
+		return
+	}
+
+	user.Password = string(hashedPassword)
+	user.PasswordResetToken = "" // Clear token
+	user.PasswordResetAt = time.Time{}
+	database.DB.Save(&user)
+
+	utils.RespondJSON(w, http.StatusOK, map[string]string{"message": "Password updated successfully"})
+}
 
 // Register creates a new user
 func Register(w http.ResponseWriter, r *http.Request) {
