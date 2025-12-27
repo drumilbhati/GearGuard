@@ -9,7 +9,7 @@
 *.dylib
 *.test
 main
-server
+/server
 gearguard
 
 # Go specific
