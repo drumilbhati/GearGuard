@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Table, Button, Badge, Card, Form, InputGroup, Row, Col } from 'react-bootstrap';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -14,16 +14,7 @@ const EquipmentList = () => {
 
     const isManager = user?.role === 'Manager';
 
-    useEffect(() => {
-        // Debounce search to avoid too many API calls
-        const delayDebounceFn = setTimeout(() => {
-            fetchData();
-        }, 300);
-
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchTerm]);
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             const query = searchTerm ? `?search=${searchTerm}` : '';
             const eqRes = await api.get(`/equipment${query}`);
@@ -40,7 +31,16 @@ const EquipmentList = () => {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    };
+    }, [searchTerm]);
+
+    useEffect(() => {
+        // Debounce search to avoid too many API calls
+        const delayDebounceFn = setTimeout(() => {
+            fetchData();
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [fetchData]);
 
     return (
         <Container className="mt-5">

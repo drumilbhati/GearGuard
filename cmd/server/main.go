@@ -97,16 +97,20 @@ func main() {
 	                protected.HandleFunc("/dashboard/stats", handlers.GetDashboardStats).Methods("GET", "OPTIONS")
 
 	        // CORS Setup
-	        frontendURL := os.Getenv("FRONTEND_URL")
-	        if frontendURL == "" {
-	            frontendURL = "http://localhost:3000"
+	        allowedOrigins := []string{
+	            "http://localhost:3000",
+	            "https://gearguard-frontend.onrender.com",
 	        }
-	
+	        if envOrigin := os.Getenv("FRONTEND_URL"); envOrigin != "" {
+	            allowedOrigins = append(allowedOrigins, envOrigin)
+	        }
+
 	        c := cors.New(cors.Options{
-	                AllowedOrigins:   []string{frontendURL},
+	                AllowedOrigins:   allowedOrigins,
 	                AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-	                AllowedHeaders:   []string{"Authorization", "Content-Type"},
+	                AllowedHeaders:   []string{"Authorization", "Content-Type", "Accept"},
 	                AllowCredentials: true,
+	                Debug:            true,
 	        })
 	handler := c.Handler(r)
 

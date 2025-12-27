@@ -5,7 +5,7 @@ import moment from 'moment';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { FaPlus, FaCalendarAlt, FaFilter, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaPlus, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 // Setup the localizer by providing the moment (or globalize, or Date) Object
 const localizer = momentLocalizer(moment);
@@ -13,7 +13,6 @@ const localizer = momentLocalizer(moment);
 const CalendarView = () => {
     const [events, setEvents] = useState([]);
     const navigate = useNavigate();
-    const [view, setView] = useState('month');
     const [date, setDate] = useState(new Date());
     const [showModal, setShowModal] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);

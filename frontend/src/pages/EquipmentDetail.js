@@ -12,7 +12,6 @@ const EquipmentDetail = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const eqRes = await api.get(`/equipment?id=${id}`); 
                 // Note: The generic get returns list, we filter manually for prototype or assume ID match if API supports /equipment/{id}
                 // To be safe with current API:
                 const allEq = await api.get('/equipment');

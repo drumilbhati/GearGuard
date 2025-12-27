@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Badge, Button, Modal, Form } from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import api from '../services/api';
-import { Link } from 'react-router-dom';
-import { FaUserCircle, FaPlus, FaClock } from 'react-icons/fa';
+import { FaUserCircle, FaClock } from 'react-icons/fa';
 
 const KanbanBoard = () => {
     const [columns, setColumns] = useState({
