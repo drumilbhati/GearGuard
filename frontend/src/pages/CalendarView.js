@@ -118,7 +118,6 @@ const CalendarView = () => {
                             defaultView="month"
                             date={date}
                             onNavigate={onNavigate}
-                            onView={setView}
                             popup
                             
                             components={{
